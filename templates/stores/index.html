@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<!-- swiper -->
+<div class="swiper banner">
+  <div class="swiper-wrapper">
+    {% if sliders %}
+      {% for item in sliders %}
+      <div class="swiper-slide">
+        <img src="{{ item.image.url }}" alt="">  
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="lead m-5 p-5 bg-danger">No Slider Available yet</p>
+    {% endif %}
+    
+  </div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+</div>
+
+<!-- products -->
+<!-- featured  -->
+<section id="featured" class="py-4 my-3">
+  <div class="container">
+      <!-- intro -->
+     <div class="intro mb-5">
+      <h2 class="text-center">
+          <span>&#8668;</span> Products <span>&#8669;</span>
+      </h2>
+     </div>
+     <!-- product list -->
+     <div class="row">
+      {% if paginator %}
+        {% for item in paginator %}
+        <div class="col-12 col-md-3">
+          <a href="{% url 'singlepage' item.slug %}">
+              <div class="product">
+                  <img src="{{item.image.url}}" alt="" class="img-fluid">
+                  <h5>{{item.title}}</h5>
+                  <h6>{% if item.discount_price %}
+                    &#8358; {{item.discount_price | intcomma}} <del>&#8358; {{item.price | intcomma }}</del>
+                  {% else %}
+                  &#8358; {{item.price | intcomma}} 
+                  {% endif %}
+                  </h6>
+                  <div class="stars">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                  </div>
+                  <a class="btn" href='{% url 'addtocart' item.id %}'>ADD TO CART</a>
+                 </div>
+          </a>
+      </div>
+        {% endfor %}
+
+        <!-- pagination -->
+        
+        <div class="col-md-5 mx-auto my-5">
+          <nav aria-label="...">
+            <ul class="pagination">
+              {% if paginator.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ paginator.previous_page_number}}" >Previous</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Previous</a>
+              </li>
+              {% endif %}
+
+              {% for i in paginator.paginator.page_range %}
+                {% if i == paginator.number %}
+                <li class="page-item active"><a class="page-link">{{i}}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if paginator.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{paginator.next_page_number}}">Next</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- end of pagination -->
+      {% else %}
+        <p class="lead p-4 m-4 bg-danger text-white">No Product In the Database</p>
+      {% endif %}
+      
+      
+    </div>
+  </div>
+</section>
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+
+
+
+<div class="container">
+    <h6 class="text-center">welcome <strong>{{request.user.username}}</strong></h6>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card">
+                <h4>Shipping Info</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">Name: <strong>{{customer.full_name}}</strong></li>
+                    <li class="list-group-item">Email: <strong>{{customer.user.email}}</strong></li>
+                    <li class="list-group-item">Username: <strong>{{customer.user.username}}</strong></li>
+                    <li class="list-group-item">Address: <strong>{{customer.address}}</strong></li>
+                    <li class="list-group-item">Registered: <strong>{{customer.registered}}</strong></li>
+                  </ul>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+                <h4>Order Info</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Order Id</th>
+                            <th>Amount</th>
+                            <th>Ordered Date</th>
+                            <th>Order Status</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if orders %}
+                          {% for order in orders %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>#ECOMORD_{{order.id}}</td>
+                                <td>&#8358; {{order.amount | intcomma }}</td>
+                                <td>{{order.created_at| timesince}} ago</td>
+                                {% if order.order_status == 'Order Completed' %}
+                                <td class="bg-success">{{order.order_status}}</td>
+                                {% else %}
+                                <td>{{order.order_status}}</td>
+                                {% endif %}
+                                
+                                
+                            </tr>
+                          {% endfor %}
+                        {% else %}
+                            <tr>
+                                <p class="lead bg-danger p-3">No Order Yet</p>
+                            </tr>
+                        {% endif %}
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

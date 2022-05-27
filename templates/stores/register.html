@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card p-2">
+                <h4>Register</h4>
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    {{form}}
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-success">Register</button>
+                    </div>
+                    <p>Already a user? <a href="{% url 'login' %}{% if request.GET.next%}?next={{request.GET.next}}{% endif %}">Login</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
